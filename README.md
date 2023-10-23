@@ -24,7 +24,11 @@ there is no any idea
 
 ## Built With
 
-To create a production build, use npm run build.
+To create a production build, use 
+
+```
+npm run build.
+```
 
 ## Contributing
 
