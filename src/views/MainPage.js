@@ -11,8 +11,7 @@ function MainPage() {
 
   const changeShelf = (book, newShelf) => {
     update(book, newShelf)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
         refreshShelves();
       })
       .catch((error) => {

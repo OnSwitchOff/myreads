@@ -8,7 +8,7 @@ export default class Book {
   constructor(bookId, url, shelf, authors, title) {
     this.id = bookId;
     this.imgUrl = url;
-    this.bookShelf = shelf;
+    this.bookShelf = shelf ? shelf: 'none';
     this.bookAuthors = authors ? authors : [];
     this.bookTitle = title;
   }

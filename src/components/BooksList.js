@@ -19,7 +19,7 @@ function BooksList({books, onChangeShelf}) {
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select value="default" onChange={(e) => onChangeShelf(book, e.target.value)}>
+                  <select value={book.bookShelf} onChange={(e) => onChangeShelf(book, e.target.value)}>
                     <option value="default" disabled>
                       Move to...
                     </option>

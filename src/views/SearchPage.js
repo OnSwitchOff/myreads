@@ -1,4 +1,4 @@
-import { update, search} from "../BooksAPI.js"
+import { update, search, getAll} from "../BooksAPI.js"
 import { useState} from "react";
 import BooksList from "../components/BooksList";
 import Book  from "../models/Book.js";
@@ -9,7 +9,6 @@ function SearchPage() {
   const [searchPageState, setSearchPageState] = useState(new SearchPageState());
 
   const changeSearchStringHandler = (input) => {
-    console.log(input);
     let newState = {...searchPageState};
     newState.searchString = input;
     if (input === ''){
@@ -20,8 +19,19 @@ function SearchPage() {
     {
       search(input, 10)
         .then((books) => {
-          newState.searchResult = books.map(b => new Book(b.id, b.imageLinks ? b.imageLinks.thumbnail : '', b.shelf, b.authors, b.title));
-          setSearchPageState(newState);
+          getAll()
+            .then((allbooks) => {
+              newState.searchResult = books.map(b => new Book(b.id, b.imageLinks ? b.imageLinks.thumbnail : '',
+                allbooks.filter(ab => ab.id === b.id)[0] ? allbooks.filter(ab => ab.id === b.id)[0].shelf : 'none' ,
+                b.authors, b.title));
+              setSearchPageState(newState);
+            })
+            .catch((error) => {
+              // Handle any errors that occur during the fetch or parsing
+              console.error(error);
+              newState.searchResult = [];
+              setSearchPageState(newState);
+            });
         })
         .catch((error) => {
           // Handle any errors that occur during the fetch or parsing
@@ -34,8 +44,8 @@ function SearchPage() {
 
   const changeShelf = (book, newShelf) => {
     update(book, newShelf)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
+        changeSearchStringHandler(searchPageState.searchString);
       })
       .catch((error) => {
         // Handle any errors that occur during the fetch or parsing
